@@ -1,0 +1,13 @@
+name: msys2-probe2
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: windows-2025
+    steps:
+      - run: |
+          $sw = [Diagnostics.Stopwatch]::StartNew()
+          & C:\msys64\usr\bin\pacman.exe -Sy --noconfirm --needed make python mingw-w64-ucrt-x86_64-gcc 2>&1 | Select-Object -Last 6
+          Write-Output "PACMAN_RC=$LASTEXITCODE ELAPSED=$([int]$sw.Elapsed.TotalSeconds)s"
+          $env:MSYSTEM = "UCRT64"
+          & C:\msys64\usr\bin\bash.exe -lc 'echo PATH=$PATH | tr ":" "\n" | grep -c ucrt64; which g++ make; g++ --version | head -1'
+        shell: pwsh
