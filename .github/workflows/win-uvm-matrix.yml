@@ -343,7 +343,7 @@ jobs:
         uses: msys2/setup-msys2@v2
         with:
           msystem: UCRT64
-          location: C:\
+          msys2-location: C:\msys64
           update: false
           install: make python
           pacboy: toolchain:p
