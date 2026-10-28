@@ -339,14 +339,6 @@ jobs:
         with:
           path: ${{ github.workspace }}/win_flex_bison
           key: win_flex_bison-replica
-      - name: setup msys2
-        uses: msys2/setup-msys2@v2
-        with:
-          msystem: UCRT64
-          msys2-location: C:\msys64
-          update: false
-          install: make python
-          pacboy: toolchain:p
       - name: compile
         run: ./ci/ci-win-compile.ps1
       - name: test build
