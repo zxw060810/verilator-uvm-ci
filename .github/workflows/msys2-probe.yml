@@ -1,0 +1,17 @@
+name: msys2-probe
+on: workflow_dispatch
+jobs:
+  probe:
+    runs-on: windows-2025
+    steps:
+      - run: |
+          $dirs = @("C:\msys64\ucrt64\bin", "C:\msys64\mingw64\bin", "C:\msys64\usr\bin")
+          foreach ($d in $dirs) {
+            Write-Output "=== $d exists: $(Test-Path $d)"
+            if (Test-Path $d) {
+              Get-ChildItem $d -Name -ErrorAction SilentlyContinue | Where-Object { $_ -match '^(g\+\+|gcc|make|bash|sh|ar|python|python3|ld)\.exe$' } | ForEach-Object { Write-Output "  $_" }
+            }
+          }
+          Write-Output "=== msys2 version:"
+          & C:\msys64\usr\bin\bash.exe -lc 'uname -a; echo MSYSTEM=$MSYSTEM; which g++ make python; g++ --version | head -1'
+        shell: pwsh
