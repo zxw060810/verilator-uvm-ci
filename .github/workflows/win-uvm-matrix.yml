@@ -318,28 +318,3 @@ jobs:
           echo "$out" | grep -q 'UVM_ERROR :    0'
           echo "CELL gpp-f2-default-dpi PASS"
 
-  upstream-replica:
-    # Byte-exact replica of the official regression.yml build-windows job,
-    # running the ci-win-test.ps1 from the win-uvm-ci-pr branch (with the
-    # proposed UVM section) before anything is pushed upstream.
-    name: upstream-replica (official ci-win scripts + UVM section)
-    runs-on: windows-2025-vs2026
-    timeout-minutes: 180
-    defaults:
-      run:
-        working-directory: repo
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          repository: zxw060810/verilator
-          ref: win-uvm-ci-pr
-          path: repo
-      - name: Cache win_flex_bison
-        uses: actions/cache@v4
-        with:
-          path: ${{ github.workspace }}/win_flex_bison
-          key: win_flex_bison-replica
-      - name: compile
-        run: ./ci/ci-win-compile.ps1
-      - name: test build
-        run: ./ci/ci-win-test.ps1
