@@ -2,8 +2,6 @@ name: Win UVM Matrix
 
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
 
 jobs:
   setup-msvc:
